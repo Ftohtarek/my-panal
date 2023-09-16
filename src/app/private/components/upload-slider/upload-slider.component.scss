@@ -1,0 +1,77 @@
+@use "src/themes/reusableThemes" as themes;
+@mixin cover($zIndex: 1) {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  right: 0;
+  top: 0;
+}
+div[linkable-field] {
+  position: relative;
+  min-width: 100px;
+  width: fit-content;
+  height: 35px;
+  label[fload-label] {
+    background-color: rgba(128, 128, 128, 0.342);
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: .5s;
+    &.active {
+      background-color: rgba(128, 128, 128, 0);
+      z-index: -1;
+    }
+  }
+
+  input {
+    height: inherit;
+  }
+}
+.drop-container {
+  position: relative;
+  height: 125px;
+  input {
+    visibility: hidden;
+  }
+  label {
+    @include cover();
+    border: 1px dashed gray;
+    background-color: rgba(173, 216, 230, 0.168);
+
+    @include themes.flexCenter();
+  }
+  div[image-cover] {
+    display: none;
+    @include cover($zIndex: 2);
+    background-color: white;
+    border: 1px dashed gray;
+    padding: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  div[image-cover]:hover ~ span[delete] {
+    display: block;
+  }
+  span[delete]:hover {
+    display: block;
+  }
+  span[delete] {
+    display: none;
+    cursor: pointer;
+    @include cover($zIndex: 4);
+    width: fit-content;
+    height: fit-content;
+    right: 5px;
+    top: 5px;
+    color: red;
+    border: none;
+  }
+}
