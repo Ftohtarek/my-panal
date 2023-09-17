@@ -1,4 +1,3 @@
-@use "src/themes/reusableThemes" as themes;
 @mixin cover($zIndex: 1) {
   position: absolute;
   z-index: 1;
@@ -20,7 +19,7 @@ div[linkable-field] {
     top: 0;
     width: 100%;
     height: 100%;
-    transition: .5s;
+    transition: 0.5s;
     &.active {
       background-color: rgba(128, 128, 128, 0);
       z-index: -1;
@@ -41,8 +40,9 @@ div[linkable-field] {
     @include cover();
     border: 1px dashed gray;
     background-color: rgba(173, 216, 230, 0.168);
-
-    @include themes.flexCenter();
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   div[image-cover] {
     display: none;

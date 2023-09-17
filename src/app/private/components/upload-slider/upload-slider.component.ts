@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import { IBannerModel, ICover, ILinkable } from '../../models/banner';
 
 @Component({
   selector: 'admin-upload-slider',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule],
   templateUrl: './upload-slider.component.html',
   styleUrls: ['./upload-slider.component.scss']
 })
@@ -18,10 +17,24 @@ export class UploadSliderComponent {
   bannerData?: IBannerModel[]
   linkable: ILinkable[] = [{ key: 'categories', value: null }, { key: 'brands', value: null }, { key: 'collections', value: null }, { key: 'priceTo', value: null }, { key: 'priceFrom', value: null }]
   covers: ICover = { desktopAr: '', desktopEn: '', mobileAr: '', mobileEn: '' }
-
   coverKeys = Object.keys(this.covers)
 
-  constructor(private http: HttpClient, private tostar: ToastrService) {
+  distination = 0
+  constructor(private http: HttpClient, private tostar: ToastrService) { }
+
+  selectDestination(event: Event) {
+    const target = <HTMLSelectElement>event.target
+    this.http.post('./destination', { distination: target.value }).subscribe({
+      next: (res: any) => {
+        this.distination = Number(target.value)
+        this.tostar.success('', res.message)
+        this.getBanners()
+
+      }
+    })
+  }
+
+  getBanners() {
     this.http.get('./home-banners').subscribe(data => {
       this.bannerData = <IBannerModel[]>data
     })
@@ -31,9 +44,26 @@ export class UploadSliderComponent {
     if (!this.bannerRow && this.bannerRow != 0)
       return this.tostar.error('', 'Please select banner row');
 
+    if (!this.can()) return
+
     return this.http.post('./home-banners', { "banner_data": (this.bannerData as [])[this.bannerRow], "banner_row": this.bannerRow }).subscribe((response: any) => {
       this.tostar.success('', response.message)
     })
+  }
+
+  uploadImage(file: File) {
+    if (!this.can()) return
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      this.http.post('/upload', formData).subscribe({
+        next: (response: any) => {
+          this.tostar.success('', response.message)
+        }
+      }
+      );
+    }
   }
 
   updateBannerImageName(file: File, coverName: string) {
@@ -45,9 +75,15 @@ export class UploadSliderComponent {
   }
 
   selectRow(event: Event) {
-
     const target = <HTMLSelectElement>event.target
-    console.log(target.value);
+    this.clearAllImage()
+    if (!this.can()) {
+      this.tostar.error('', 'please select a destination first')
+      target.value = ''
+      this.clearAllImage()
+    }
+
+    if (!this.can()) return
     this.bannerRow = Number(target.value)
   }
 
@@ -86,19 +122,6 @@ export class UploadSliderComponent {
     return reader.readAsDataURL(file);
   }
 
-  uploadImage(file: File) {
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      this.http.post('/upload', formData).subscribe({
-        next: (response: any) => {
-          this.tostar.success('', response.message)
-        }
-      }
-      );
-    }
-  }
-
   setImageCover(mainCover: HTMLElement, url: string) {
     mainCover.style.display = 'block'
     mainCover.querySelector('img')!.src = url
@@ -107,12 +130,21 @@ export class UploadSliderComponent {
   clear(event: Event) {
     const target = <HTMLElement>(<HTMLInputElement>event.target)?.closest('span[delete]')
     const parent = target.parentElement;
+    this.clearImage(<HTMLElement>parent)
+  }
 
+  clearAllImage() {
+    let imagesContainer = document.querySelectorAll('.drop-container')
+    imagesContainer.forEach(container => {
+      this.clearImage(<HTMLElement>container, false)
+    })
+  }
+  clearImage(parent: HTMLElement, anotation: boolean = true) {
     (parent!.querySelector('img') as HTMLImageElement).src = '';
     (parent!.querySelector('input') as HTMLInputElement).value = '';
     (parent!.querySelector('div[image-cover]') as HTMLElement).style.display = 'none'
-
-    this.tostar.warning('', 'Filed is Clearing')
+    if (anotation)
+      this.tostar.warning('', 'Filed is Clearing')
   }
 
   banner(bannerRow: number) {
@@ -147,6 +179,7 @@ export class UploadSliderComponent {
     return <ILinkable>{}
 
   }
+
   updatePage(event: Event) {
     const target = <HTMLSelectElement>event.target
     if (this.bannerData)
@@ -157,24 +190,36 @@ export class UploadSliderComponent {
 
   updateLink(key: string, event: Event) {
     const target = <HTMLInputElement>event.target
-
     if (this.bannerData) {
-      const index = this.bannerData[this.bannerRow]?.linkable?.findIndex(res => res.key == key)
-      if (index && index != -1)
-        target.value == '' ? delete this.bannerData[this.bannerRow].linkable[index] :
-          this.bannerData[this.bannerRow].linkable[index] = { key: key, value: target.value };
-      else if (!this.bannerData[this.bannerRow]?.linkable)
-        this.bannerData[this.bannerRow]['linkable'] = [{ key: key, value: target.value }]
-      else if (target.value != '')
-        this.bannerData[this.bannerRow].linkable.push({ key: key, value: target.value })
+      const { bannerData, bannerRow } = this; // Destructure the object for easier access
+      const linkableArray = bannerData[bannerRow]?.linkable || [];
 
+      const index = linkableArray.findIndex(res => res.key === key);
+      const newLinkable = { key: key, value: target.value };
+
+      if (index !== -1) {
+        if (target.value === '') {
+          linkableArray.splice(index, 1);
+        } else {
+          linkableArray[index] = newLinkable;
+        }
+      } else if (target.value !== '') {
+        linkableArray.push(newLinkable);
+      }
+
+      bannerData[bannerRow] = { ...bannerData[bannerRow], linkable: linkableArray };
     }
     this.updateMetaDate()
   }
+
   save() {
     this.http.get('/move-to-work-dir').subscribe({
       next: (res: any) => { this.tostar.success(res.message) }
     })
+  }
+
+  can() {
+    return this.distination ? true : false
   }
 }
 

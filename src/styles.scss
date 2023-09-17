@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+$topPoistionDesktop: 85px;
+$topPoistionMobile: 15px;
+#toast-container {
+  .ngx-toastr {
+    right: 30px;
+    width: 350px;
+    overflow: visible !important;
+  }
+  &.toast-top-right {
+    top: $topPoistionDesktop !important;
+    right: 12px;
+    @media screen and (max-width: 1000px) {
+      top: $topPoistionMobile !important;
+    }
+  }
+  .toast-error,
+  .toast-success,
+  .toast-warning {
+    border-radius: 60px;
+    opacity: 1;
+    min-height: 35px;
+    height: fit-content;
+    margin: 10px 0px;
+    padding: 0px 10px 0px 40px;
+    color: #0e1740;
+    position: relative;
+    box-shadow: 25px 25px 25px rgba(0, 0, 0, 0.1);
+  }
+  .toast-success {
+    background-image: url("assets/images/tostar/success_Toast.svg") !important;
+    background-repeat: no-repeat;
+    background-color: #e5f6f4;
+    background-size: 25px;
+    background-position: 10px center;
+    border: 1px solid #48a299;
+  }
+  .toast-error {
+    background-image: url("assets/images/tostar/error_toast.svg") !important;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: 10px center;
+    background-color: #fbe8ee;
+    border: 1px solid #d84432;
+  }
+  .toast-warning {
+    background-image: url("assets/images/tostar/warining_toast.svg") !important;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: 10px center;
+
+    background-color: #feefd0;
+    border: 1px solid #f0b343;
+  }
+  .toast-close-button {
+    top: 0px;
+    right: -36px;
+    position: absolute;
+    border-radius: 60px;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 0 12px #999;
+  }
+  .toast-title {
+    position: absolute;
+    top: 5px !important;
+    font-size: 16px;
+  }
+}

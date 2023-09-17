@@ -2,9 +2,19 @@
   <div class="header">
     <h4 class="text-center">UPLOAD BANNERS</h4>
   </div>
-
   <!-- requried Information -->
   <div class="row">
+    <!-- destination -->
+    <div class="col-12">
+      <div class="mb-2">
+        <label for="distination">distination</label>
+        <select name="distination" class="form-select" (change)="selectDestination($event)">
+          <option value="">not selected</option>
+          <option *ngFor="let item of ['sadia arabian','egypt'];let i=index" [value]="i+1"
+            [selected]="i+1 == distination">{{item}}</option>
+        </select>
+      </div>
+    </div>
     <!-- banner row -->
     <div class="col-6">
       <div class="mb-2">
@@ -20,7 +30,7 @@
     <div class="col-6">
       <div class="mb-2">
         <label for="page">banner row number</label>
-        <select name="page" id="page" class="form-select" [value]="banner(bannerRow)?.page"
+        <select [disabled]="!can()" name="page" id="page" class="form-select" [value]="banner(bannerRow)?.page"
           (change)="updatePage($event)">
           <option value="">not selected</option>
           <option *ngFor="let item of ['allProducts','offers']" [value]="item">{{item}}</option>
@@ -35,8 +45,9 @@
         <div *ngFor="let link of linkable">
           <p class="form-label">{{link.key}}</p>
           <div linkable-field class="mb-2">
-            <input [value]="hasValue(link) ? getValue(link).value:''" id="{{link.key}}" type="text" class="form-control"
-              placeholder="{{link.key}}" (blur)="checkActivation($event)" (change)="updateLink(link.key,$event)">
+            <input [disabled]="!can()" [value]="hasValue(link) ? getValue(link).value:''" id="{{link.key}}" type="text"
+              class="form-control" placeholder="{{link.key}}" (blur)="checkActivation($event)"
+              (change)="updateLink(link.key,$event)">
             <label for="{{link.key}}" fload-label (click)="activeLabel($event)" [class.active]="hasValue(link)">
             </label>
           </div>
@@ -45,6 +56,7 @@
     </div>
 
   </div>
+  
   <!-- image fields  -->
   <div class="row">
 
@@ -54,13 +66,14 @@
           [type]="bannerRow?'file':'text'" accept="image/*">
         <label for="{{key}}">{{key}}</label>
         <div image-cover><img></div>
-        <span delete (click)="clear($event)"><mat-icon>delete_outline</mat-icon></span>
+        <span delete (click)="clear($event)"><i>delete_outline</i></span>
+        <!-- <span delete (click)="clear($event)"><mat-icon>delete_outline</mat-icon></span> -->
       </div>
     </div>
 
     <div class="col-12">
       <div class="form-control">
-        <button class="w-100 btn btn-warning" (click)="save()">save</button>
+        <button class="w-100 btn btn-warning">this panal is working real time </button>
       </div>
     </div>
   </div>

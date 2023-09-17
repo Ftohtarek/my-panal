@@ -1,0 +1,11 @@
+<svg id="Group_15852" data-name="Group 15852" xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
+  <rect id="Rectangle_723" data-name="Rectangle 723" width="38" height="38" rx="19" fill="#fab118"/>
+  <g id="vuesax_linear_info-circle" data-name="vuesax/linear/info-circle" transform="translate(-357 -245)">
+    <g id="info-circle">
+      <path id="Vector" d="M10,20A10,10,0,1,0,0,10,10.029,10.029,0,0,0,10,20Z" transform="translate(366 254)" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Vector-2" data-name="Vector" d="M0,0V5" transform="translate(376 260)" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Vector-3" data-name="Vector" d="M0,0H.009" transform="translate(375.995 268)" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Vector-4" data-name="Vector" d="M0,0H24V24H0Z" transform="translate(364 252)" fill="none" opacity="0"/>
+    </g>
+  </g>
+</svg>
