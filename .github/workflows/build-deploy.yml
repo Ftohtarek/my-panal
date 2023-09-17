@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is build and deploy
 on:
   push:
     branches:
-      - "layer-and-events"
+      - "production"
 
 jobs:
   check-bats-version:
