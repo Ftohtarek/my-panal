@@ -24,3 +24,22 @@ jobs:
       - name: Build Angular ssr Project
         run: npm run build:ssr
 
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+
+        with:
+
+          host: 35.219.236.33
+          username: etmana
+          key: ${{ secrets.SERVER_KEY }}
+          passphrase: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+
+          proxy_host: 34.154.126.85
+          proxy_username: etmana
+          proxy_key: ${{ secrets.JUMP_KEY}}
+
+          source: "./ghost"
+          target: "/var/www/etmana-front/"
+
+

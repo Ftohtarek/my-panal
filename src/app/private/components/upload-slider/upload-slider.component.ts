@@ -139,10 +139,12 @@ export class UploadSliderComponent {
       this.clearImage(<HTMLElement>container, false)
     })
   }
+  
   clearImage(parent: HTMLElement, anotation: boolean = true) {
     (parent!.querySelector('img') as HTMLImageElement).src = '';
     (parent!.querySelector('input') as HTMLInputElement).value = '';
-    (parent!.querySelector('div[image-cover]') as HTMLElement).style.display = 'none'
+    (parent!.querySelector('div[image-cover]') as HTMLElement).style.display = 'none';
+
     if (anotation)
       this.tostar.warning('', 'Filed is Clearing')
   }
