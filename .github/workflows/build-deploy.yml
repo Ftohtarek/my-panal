@@ -40,6 +40,6 @@ jobs:
           proxy_key: ${{ secrets.JUMP_KEY}}
 
           source: "./dist"
-          target: "/var/www/etmana-front/"
+          target: "/var/www/etmana-front/testg"
 
 
