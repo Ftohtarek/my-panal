@@ -29,7 +29,7 @@ jobs:
 
         with:
 
-          host: 35.219.236.33
+          host: 35.219.224.72
           username: etmana
           key: ${{ secrets.SERVER_KEY }}
           passphrase: ${{ secrets.SERVER_PASSWORD }}
@@ -40,6 +40,6 @@ jobs:
           proxy_key: ${{ secrets.JUMP_KEY}}
 
           source: "./dist"
-          target: "/var/www/etmana-front/testg"
+          target: "/var/www/etmana-front/test"
 
 
