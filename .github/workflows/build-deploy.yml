@@ -39,7 +39,7 @@ jobs:
           proxy_username: etmana
           proxy_key: ${{ secrets.JUMP_KEY}}
 
-          source: "./ghost"
+          source: "./dist"
           target: "/var/www/etmana-front/"
 
 
